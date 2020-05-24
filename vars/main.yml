@@ -1,0 +1,6 @@
+---
+# Java Major version number
+java_major_version: "{{ java_version | regex_replace('^(?:dcevm-?)?([0-9]+).*', '\\1') }}"
+
+# Java Full version number
+java_full_version: '{{ java_version }}'

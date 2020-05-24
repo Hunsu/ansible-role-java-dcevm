@@ -1,0 +1,28 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: playbook.yml
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+lint: |
+  yamllint .
+  ansible-lint
+
+platforms:
+  - name: ansible-role-default
+    image: geerlingguy/docker-ubuntu2004-ansible
+
+playbooks:
+  converge: playbook.yml
+
+scenario:
+  name: default
+
+verifier:
+  name: testinfra
+  directory: tests

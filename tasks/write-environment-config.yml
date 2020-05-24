@@ -1,0 +1,29 @@
+---
+# Set JAVA_HOME
+- name: make sure /etc/profile.d exists
+  become: yes
+  file:
+    path: /etc/profile.d
+    state: directory
+    owner: root
+    group: root
+    mode: 'u=rwx,go=rx'
+  when: java_is_default_installation
+
+- name: export JAVA_HOME and add to PATH
+  become: yes
+  template:
+    src: java.sh.j2
+    dest: /etc/profile.d/java.sh
+    owner: root
+    group: root
+    mode: 'u=rw,go=r'
+  when: java_is_default_installation
+
+- name: Adding the path in the bashrc files
+  lineinfile:
+    dest: /root/.bashrc
+    line: "export PATH=$PATH:{{ java_home }}/bin"
+    insertafter: 'EOF'
+    regexp: "export PATH=\\$PATH:{{ java_home }}/bin"
+    state: present

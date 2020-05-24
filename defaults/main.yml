@@ -1,0 +1,16 @@
+---
+# Java version number
+# Specify '8', '11' to get the latest patch
+# version of that release.
+java_version: '11'
+
+# Base installation directory for any Java distribution
+java_install_dir: '/opt/java'
+
+# Directory to store files downloaded for Java installation on the remote box
+java_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
+
+# If this is the default installation, profile scripts will be written to set
+# the JAVA_HOME environment variable and add the bin directory to the PATH
+# environment variable.
+java_is_default_installation: yes

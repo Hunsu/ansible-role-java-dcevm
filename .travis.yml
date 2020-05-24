@@ -1,0 +1,50 @@
+---
+language: python
+python: '3.8'
+
+env:
+  global:
+    - MOLECULEW_USE_SYSTEM=true
+
+jobs:
+  include:
+    - env:
+        - MOLECULE_SCENARIO=default
+        - MOLECULEW_ANSIBLE=2.9.1
+    - env:
+        - MOLECULE_SCENARIO=ubuntu-java8-with-tag
+        - MOLECULEW_ANSIBLE=2.9.1
+
+# Require Ubuntu 16.04
+dist: bionic
+
+# Require Docker
+services:
+  - docker
+
+install:
+  # Install dependencies
+  - pip install ansible-lint
+  - pip install yamllint
+  - pip install testinfra
+  - ./moleculew wrapper-install
+
+  # Display versions
+  - ./moleculew wrapper-versions
+
+script:
+  - ./moleculew test --scenario-name=$MOLECULE_SCENARIO
+
+cache:
+  directories:
+    - $HOME/.moleculew
+    - $HOME/.cache/pip
+
+branches:
+  only:
+    - master
+    - develop
+    - /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)([\.\-].*)?$/
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

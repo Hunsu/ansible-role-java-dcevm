@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Rabah Meradi
+  description: Role for installing the Java JDK with Dcevm.
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+  galaxy_tags:
+    - java
+    - jdk
+    - adoptopenjdk
+    - development
+    - web
+    - system
+    - dcevm
+dependencies: []

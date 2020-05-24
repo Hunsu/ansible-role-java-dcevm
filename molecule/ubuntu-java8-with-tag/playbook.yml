@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+
+  roles:
+    - role: ansible-role-java-dcevm
+      java_version: dcevm8u202b08
