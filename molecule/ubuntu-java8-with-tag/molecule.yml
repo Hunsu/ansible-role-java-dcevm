@@ -8,10 +8,8 @@ driver:
   name: docker
 
 lint: |
-  set -e
   yamllint .
   ansible-lint
-  flake8
 
 platforms:
   - name: ansible-role-java8-with-tag

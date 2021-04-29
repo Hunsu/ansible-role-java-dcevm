@@ -14,9 +14,11 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 def test_java_tools(host, command):
     cmd = host.run('. /etc/profile && ' + command + ' -version')
     assert cmd.rc == 0
-    assert '11.0.7' in cmd.stdout
     if command == 'java':
+        assert '11.0.10' in cmd.stderr
         assert "Dynamic Code Evolution" in cmd.stderr
+    else:
+        assert '11.0.10' in cmd.stdout
 
 
 @pytest.mark.parametrize('version_dir_pattern', [
