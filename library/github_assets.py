@@ -37,25 +37,34 @@ def download_assets(data):
     has_changed = False
     return_result = {
         "tag": data['tag'],
-        "assets": []
+        "assets": [],
+        "errors": ""
     }
     repository = data['repository']
     releases_url = 'https://api.github.com/repos/%s/releases' % repository
-    response = get_response(releases_url)
-    tag_name = data['tag']
-    if tag_name == 'latest':
-        tag_name = response[0]['tag_name']
-        return_result['tag'] = tag_name
-    for release in response:
-        if release['tag_name'] == tag_name:
-            for asset in release['assets']:
-                if re.compile(data['asset_pattern']).match(asset['name']):
-                    download_url = asset['browser_download_url']
-                    file_name = parse.unquote(download_url[download_url.rindex('download/') + 9:]).replace('/', '-')
-                    result = download_asset(download_url, data['download_path'], file_name)
-                    if result:
-                        has_changed = True
-                    return_result['assets'].append(file_name)
+    try:
+        response = get_response(releases_url)
+    except Exception as e:
+        has_changed = True
+        return_result[
+            'errors'] = "An error occurred when trying to to download releases from: " + releases_url + "the error " \
+                                                                                                        "was " + str(e)
+    else:
+        tag_name = data['tag']
+        if tag_name == 'latest':
+            tag_name = response[0]['tag_name']
+            return_result['tag'] = tag_name
+        for release in response:
+            if release['tag_name'] == tag_name:
+                for asset in release['assets']:
+                    if re.compile(data['asset_pattern']).match(asset['name']):
+                        download_url = asset['browser_download_url']
+                        file_name = parse.unquote(download_url[download_url.rindex('download/') + 9:]).replace('/', '-')
+                        result = download_asset(download_url, data['download_path'], file_name)
+                        if result:
+                            has_changed = True
+                        return_result['assets'].append(file_name)
+
     return has_changed, return_result
 
 
@@ -69,6 +78,8 @@ def main():
 
     module = AnsibleModule(argument_spec=fields)
     changed, response = download_assets(module.params)
+    if response['errors']:
+        raise Exception(response['errors'])
     module.exit_json(changed=changed, meta=response)
 
 

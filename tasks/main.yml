@@ -10,13 +10,17 @@
     mode: 'u=rwx,go=rx'
     dest: '{{ java_download_dir }}'
 
-- name: set JDK version
+- name:
+  debug:
+    msg: "{{ java_major_version }}"
+
+- name: set newgen prefix
   set_fact:
-    java_jdk_version: "{{ java_full_version }}"
+    suffix: "{{ '-newgen' if (java_major_version == '11') else '' }}"
 
 - name: Download JDK
   github_assets:
-    repository: 'TravaOpenJDK/trava-jdk-{{ java_major_version }}-dcevm'
+    repository: 'TravaOpenJDK/trava-jdk-{{ java_major_version }}-dcevm{{ suffix }}'
     tag: "{{ java_full_version if java_full_version != 8 and java_full_version != 11 else 'latest' | default('latest') }}"
     asset_pattern: '.*linux.*'
     download_path: "{{ java_download_dir }}"
@@ -50,7 +54,7 @@
     remote_src: true
     src: "{{ java_download_dir }}/{{ result.meta.assets[0] }}"
     dest: '{{ java_home }}'
-    extra_opts: [--strip-components=1]
+    extra_opts: [ --strip-components=1 ]
     creates: '{{ java_home }}/bin/java'
     owner: root
     group: root
