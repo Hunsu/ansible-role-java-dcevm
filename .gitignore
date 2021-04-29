@@ -61,7 +61,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-*~
 
 ### Vim ###
 # swap
@@ -248,3 +247,5 @@ __pycache__
 .molecule
 /tests/files/*
 /molecule/*/files/*
+/venv/*
+.idea/*
