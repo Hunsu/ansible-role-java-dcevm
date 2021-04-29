@@ -1,8 +1,6 @@
 ---
 provisioner:
   name: ansible
-  playbooks:
-    converge: playbook.yml
 dependency:
   name: galaxy
 
@@ -16,9 +14,6 @@ lint: |
 platforms:
   - name: ansible-role-default
     image: geerlingguy/docker-ubuntu2004-ansible
-
-playbooks:
-  converge: playbook.yml
 
 scenario:
   name: default

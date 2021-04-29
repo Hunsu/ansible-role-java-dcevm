@@ -1,8 +1,6 @@
 ---
 provisioner:
   name: ansible
-  playbooks:
-    converge: playbook.yml
 dependency:
   name: galaxy
 
@@ -10,19 +8,18 @@ driver:
   name: docker
 
 lint: |
+  set -e
   yamllint .
   ansible-lint
+  flake8
 
 platforms:
   - name: ansible-role-java8-with-tag
     image: geerlingguy/docker-ubuntu2004-ansible
-
-playbooks:
-  converge: playbook.yml
 
 scenario:
   name: ubuntu-java8-with-tag
 
 verifier:
   name: testinfra
-  directory: ./tests/
+  directory: ../tests/

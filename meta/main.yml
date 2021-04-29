@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   author: Rabah Meradi
+  role_name: ansible-role-java-dcevm
   description: Role for installing the Java JDK with Dcevm.
   license: MIT
   min_ansible_version: 2.9

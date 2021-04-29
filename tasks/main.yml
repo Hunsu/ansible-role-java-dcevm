@@ -10,10 +10,6 @@
     mode: 'u=rwx,go=rx'
     dest: '{{ java_download_dir }}'
 
-- name:
-  debug:
-    msg: "{{ java_major_version }}"
-
 - name: set newgen prefix
   set_fact:
     suffix: "{{ '-newgen' if (java_major_version == '11') else '' }}"
